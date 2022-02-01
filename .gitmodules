@@ -1,0 +1,3 @@
+[submodule "src/content/pipeline"]
+	path = src/content/pipeline
+	url = https://github.com/yerkesobservatory/pipeline.git
