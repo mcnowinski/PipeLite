@@ -162,6 +162,6 @@ drizzle:
     example:
         drizzle(filter=['g-band','i-band'], outpath) drizzles all images containing the string "g-band into their respective files
 """
-def drizzle(filter = [], infolder = outpath, outfolder = outpath):
+def drizzle(filter = [""], infolder = outpath, outfolder = outpath):
     for i in filter:
         drizzle_helper(i, infolder, outfolder)

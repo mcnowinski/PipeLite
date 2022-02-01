@@ -10,7 +10,7 @@ datafolder = outpath
 # Location of the baseconfig file.
 baseconfig = os.path.join(codefolder,'pipeline/config','pipeconf_SEO.txt')
 # Location of delta config file.
-dconfig = os.path.join(codefolder,'pipeline/config','dconf_dah.txt')
+dconfig = os.path.join(os.getcwd(), 'dconf_dah.txt')
 # Set the path to the pipeline source code.
 sys.path.append(os.path.join(codefolder,'pipeline/source'))
 print('Pipeline setup complete')

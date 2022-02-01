@@ -1,0 +1,8 @@
+astro/*
+*.pyc
+src/_pycache_/*
+src/__pycache__/image_combine.cpython-39.pyc
+src/__pycache__/image_math.cpython-39.pyc
+src/__pycache__/pipeline.cpython-39.pyc
+src/__pycache__/setup.cpython-39.pyc
+src/content/.DS_Store
