@@ -2,7 +2,7 @@
 
 The goal of this repo is to abstract as much behind-the-scenes functionality as possible to make the image processing pipeline simple and easy to run
 
-**The only configuration you must set is your astrometry.net API key. Set this in the /src/content/pipeline/config/dconf_dah.txt file**
+**The only configuration you must set is your astrometry.net API key. Set this in the /src/dconf_dah.txt file**
 
 Besides that, this does not require any setup or configurations in any other files, though default path values are set in setup.py. It is optional to set these in setup.py, as you can also set all paths from function calls alone.
 
