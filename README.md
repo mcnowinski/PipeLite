@@ -49,7 +49,7 @@ run_pipeline(folder)
     Note: Only HDR images will be processed by the pipeline
 
     Outputs:
-    Saves HPX and WPS files in the outpath.
+    Saves HPX and WCS files in the outpath.
 """
 ```
 ```
