@@ -143,6 +143,14 @@ def drizzle_helper(filter, infolder, outfolder):
         fillval=np.nan
         print('Fillvalue not recognized or missing, using default = np.nan')
 
+    dataout.imageset(np.where(driz.outsci == 10000, fillval, driz.outsci))
+    dataout.imageset(driz.outwht,'OutWeight', dataout.header)
+    dataout.filename = datain[0].filename
+
+    #add history
+    dataout.setheadval('HISTORY','Coadd: %d files combined with %s kernel, pixfrac %f at %f times resolution' \
+                            % (len(datain), kernel, pixfrac, resolution))
+
     outf = os.path.join(outfolder, newname)
     dataout.filename = outf
     print(dataout.filename)
