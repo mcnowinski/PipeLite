@@ -10,7 +10,6 @@ It combines image_math_BDF, the HotPix and Astrometry steps of the pipeline, and
 
 2. Make a copy with File -> Save a copy in Drive
 3. When you run the first cell, it will fetch this Github repo and add it to your working directory. From there, you can add your astrometry.net API key.
-To get started, clone the repo and open the main.py notebook. It explains how to run the pipeline.
 
 <h2> Running Locally </h2>
 
