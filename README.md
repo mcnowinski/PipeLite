@@ -1,4 +1,4 @@
-<h1>Welcome to the PPPP (Pretty Picture Processing Pipeline 1.0) for ASTR 21200</h1>
+<h1>Welcome to PipeLite, formally known as the Pretty Picture Processing Pipeline for ASTR 21200</h1>
 
 The goal of this repo is to abstract as much behind-the-scenes functionality as possible to make the image processing pipeline simple and easy to run
 
