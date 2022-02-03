@@ -28,11 +28,11 @@ batch_process(datapaths, outfolder, darkfolder, flatfolder, biasfolder)
     -Information for which darks,flats,biases is available here: https://wiki.uchicago.edu/display/2HA/220118
     -The datapaths must contain the 2 dynamic range files for every image, i.e bin1H and bin1L in the filenames
     Inputs:
-        datapaths (optional list str): list of paths to data files (default: datapath from input.py)
-        outfolder (optional str): path to output folder (default: outpath from input.py)
-        darkfolder (optional str): path to dark folder (default: darkpath from input.py)
-        flatfolder (optional str): path to flat folder (default: flatpath from input.py)
-        biasfolder (optional str): path to bias folder (default: biaspath from input.py)
+        -datapaths (optional list str): list of paths to data files (default: datapath from input.py)
+        -outfolder (optional str): path to output folder (default: outpath from input.py)
+        -darkfolder (optional str): path to dark folder (default: darkpath from input.py)
+        -flatfolder (optional str): path to flat folder (default: flatpath from input.py)
+        -biasfolder (optional str): path to bias folder (default: biaspath from input.py)
     Outputs:
         Saves HDR images to output path.
 """ 
@@ -44,11 +44,11 @@ run_pipeline(folder)
     on all the files in the directory.
 
     Inputs:
-    folder (str): The folder containing the files to be processed. (Default: outpath from setup.py)
-    Note: Only HDR images will be processed by the pipeline
+        -folder (str): The folder containing the files to be processed. (Default: outpath from setup.py)
+        Note: Only HDR images will be processed by the pipeline
 
     Outputs:
-    Saves HPX and WCS files in the outpath.
+        Saves HPX and WCS files in the outpath.
 """
 ```
 ```
@@ -64,6 +64,6 @@ drizzle(filter, infolder, outfolder):
     outputs:
         - Saves drizzled images to outpath
     example:
-        drizzle(filter=['g-band','i-band'], infolder = out, outfolder = out) drizzles all images containing the string "g-band into their respective files
+        drizzle(filter=['g-band','i-band'], infolder = out, outfolder = out) drizzles all images containing the strings "g-band" and "i-band" into their respective files
 """
 ```
