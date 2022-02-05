@@ -6,4 +6,5 @@ src/__pycache__/image_math.cpython-39.pyc
 src/__pycache__/pipeline.cpython-39.pyc
 src/__pycache__/setup.cpython-39.pyc
 src/content/.DS_Store
+*.DS_Store
 *.fits
