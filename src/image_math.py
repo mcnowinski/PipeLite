@@ -321,6 +321,19 @@ def make_hotpix_mask(darkfolder):
                     display_lims=(19.9, 21.9), mask_lims=[19.9, 21.9], use_percent=True)
     print("made hotpixel mask")
 
+def find_band(filepath):
+    '''
+    Find the band of the images.
+    Returns:
+        band:    string containing the band name
+    '''
+    unknown = ''
+    for b in ["h-alpha", "g-band", "i-ban", "r-band", "oiii", "sii", "clear"]:
+        if b in filepath:
+            print("Found band:", b)
+            return b
+    return unknown
+
 def load_bias(biasfolder):
     ## List the files in biaspath.
     biasfiles = [f for f in os.listdir(biasfolder) if '.fit' in f]    #  and 'dark' in f]
@@ -336,10 +349,19 @@ def load_bias(biasfolder):
     biasnameL = biasfiles[1]
     print("loaded bias")
 
-def load_flat(flatfolder):
+def load_flat(flatfolder, band_string = ""):
     flatfiles = [f for f in os.listdir(flatfolder) if '.fit' in f and 'MFLAT' in f]
+    whichfile = -1
+    if band_string == "":
+        print("Warning: no band specified. Using first flat file.")
+    for i,val in enumerate(flatfiles):
+        if band_string in val:
+            whichfile = i
+    if whichfile == -1:
+        print(f"ERROR: Could not find flat file with band_string = {band_string}")
+        return
     ## Load flat files and create names for titles of flat-frame images
-    flat_df = read_oneDF(flatfiles,1,flatfolder)
+    flat_df = read_oneDF(flatfiles,whichfile,flatfolder)
     global flatH
     flatH = flat_df.image[0]
     global flatnameH
@@ -351,16 +373,14 @@ def load_flat(flatfolder):
     gain_df = read_oneDF(flatfiles, 1, flatfolder)
     global gain
     gain = gain_df.imageget('gain ratio')
-    print("loaded flats")
+    print(f"loaded flats for band {band_string}")
 
 def load_datafiles(datapath, object_name = "", band_string = ""):
-    files = [f for f in os.listdir(datapath) if '.fit' in f and '_128.0s' in f and 'RAW' in f\
-            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f]   #and '.gz' in f
+    files = sorted([f for f in os.listdir(datapath) if '.fit' and 'RAW' in f\
+            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f], 
+            key = lambda x: os.path.getmtime(os.path.join(datapath, x)))
     files_L = [f for f in files if 'bin1L' in f]
     files_H = [f for f in files if 'bin1H' in f]
-
-    files_L = sorted(files_L)
-    files_H = sorted(files_H)
     print("Processing the following files:")
     for i in range(len(files_L)):
         print(i, files_L[i])
@@ -477,12 +497,13 @@ def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = dark
     # Batch process many files
     make_hotpix_mask(darkfolder)
     load_bias(biasfolder)
-    load_flat(flatfolder)
 
     for curr_path in datapaths:
         global datapath 
         datapath = curr_path
         files_L, files_H = load_datafiles(datapath)
+        bandstr = find_band(files_L[0])
+        load_flat(flatfolder, bandstr)
         for index in range(len(files_L)):
             dataH, dataH_df, dataL, dataL_df = process_one(index, files_L, files_H)
             outdata = process_hdr_images(dataH, dataL)
