@@ -354,8 +354,8 @@ def load_flat(flatfolder, band_string = ""):
     whichfile = -1
     if band_string == "":
         print("Warning: no band specified. Using first flat file.")
-    for i in flatfiles:
-        if band_string in i:
+    for i,val in enumerate(flatfiles):
+        if band_string in val:
             whichfile = i
     if whichfile == -1:
         print(f"ERROR: Could not find flat file with band_string = {band_string}")
@@ -376,13 +376,11 @@ def load_flat(flatfolder, band_string = ""):
     print(f"loaded flats for band {band_string}")
 
 def load_datafiles(datapath, object_name = "", band_string = ""):
-    files = [f for f in os.listdir(datapath) if '.fit' and 'RAW' in f\
-            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f]   #and '.gz' in f
+    files = sorted([f for f in os.listdir(datapath) if '.fit' and 'RAW' in f\
+            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f], 
+            key = lambda x: os.path.getmtime(os.path.join(datapath, x)))
     files_L = [f for f in files if 'bin1L' in f]
     files_H = [f for f in files if 'bin1H' in f]
-
-    files_L = sorted(files_L, key=os.path.getmtime)
-    files_H = sorted(files_H, key=os.path.getmtime)
     print("Processing the following files:")
     for i in range(len(files_L)):
         print(i, files_L[i])
