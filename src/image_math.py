@@ -399,6 +399,9 @@ def process_one(index, files_L, files_H):
     dataH.shape
     return dataH, dataH_df, dataL, dataL_df
 
+'''cosmic_file: takes a DataFits object and returns the cosmic ray cleaned image.'''
+def cosmic_file(a):
+    return detect_cosmics(a.image, cleantype='medmask')[1]
 
 '''Process HDR images through bias-dark-flat, HDR combination, and downsampling stages'''
 # Returns outdata
@@ -433,10 +436,6 @@ def process_hdr_images(dataH, dataL):
 
     '''Downsample image by factor of two'''
     outdata = nd.zoom(HDRdata,0.5)
-
-    # print('median of outdata =', np.nanmedian(outdata))
-    rr = np.isnan(flatH)
-    # print('nunber of nans =', np.sum(rr))
     return outdata
 
 def construct_output_name(index, files_H):
@@ -460,6 +459,8 @@ def create_output(newname, outdata, dataH_df, outfolder):
     outd = DataFits()
     ## Load image data in output object.
     outd.image = outimage
+    # Remove cosmic rays
+    outd.image = cosmic_file(outd)
     return outheader, outd, outname, outfile
 
 def prepare_header(outheader, outd):

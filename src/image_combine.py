@@ -2,13 +2,16 @@ from setup import *
 # Load data
 datain = []
 newname = ""
+files = []
 
 """
 load_data (internal)
 Loads data from the outfolder with the fiven filter
 """
-def load_data(inpath = outpath, filter = ""):
-    somefiles = [f for f in os.listdir(inpath) if '.fits' in f and 'WCS' in f and filter in f]
+def load_data(inpath = outpath, filter = "WCS"):
+    somefiles = [f for f in os.listdir(inpath) if '.fits' in f and filter in f]
+    print(somefiles)
+    global files
     files = sorted(somefiles)   ## Put files in alphabatical order, if necessary.
     for i in range(len(somefiles)):
         print( i, somefiles[i])
@@ -23,7 +26,8 @@ display_images:
     Display all the images in the outpath folder.
     This is useful for checking that the data is loaded correctly.
 """
-def display_images():
+def display_images(folder = outpath, filter = "WCS"):
+    load_data(folder, filter)
     show_all = True
     show_grid = False
     figx, figy = 8,8   # Use these to get a quick look and save space.
@@ -35,10 +39,12 @@ def display_images():
         vmin, vmax = med - mad * 3.0, med + mad * 20.0
         meds[i], mads[i] = med, mad
         airmass[i] = datain[i].header['airmass']
+        # print(datain[i].header['RA'])
+        # print(datain[i].header['TRAKHA'], datain[i].header['TRAKDEC'])
         if show_all == True:
             plt.figure(figsize = (figx,figy))
             if show_grid == True: plt.grid()
-            plt.title(files[i] + '   Median =' + str(med) + '    mad_std =' + str(mad))
+            plt.title(f"{files[i]} Median = {str(med)}  mad_std = {str(mad)}\n RA = {str(datain[i].header['RA'])}  DEC = {str(datain[i].header['DEC'])}\n  TRAKHA = {str(datain[i].header['TRAKHA'])} TRAKDEC = {str(datain[i].header['TRAKDEC'])} \n")
             plt.imshow(datain[i].image,'gray_r',interpolation = 'nearest',vmax=vmax,vmin=vmin)
 
 """

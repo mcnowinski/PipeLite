@@ -14,6 +14,7 @@ import scipy.ndimage as nd                        # Various algorithms for image
 from astropy.time import Time
 from astropy.convolution import Gaussian2DKernel, interpolate_replace_nans
 from astropy import wcs
+from astroscrappy import detect_cosmics
 from drizzle import drizzle as drz
 
 # Specify data paths

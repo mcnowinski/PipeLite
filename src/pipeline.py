@@ -26,7 +26,7 @@ run_pipeline:
     folder (str): The folder containing the files to be processed. (Default: outpath)
 
     Outputs:
-    Saves HPX and WPS files in the outpath.
+    Saves HPX and WCS files in the outpath.
 """
 def run_pipeline(folder = outpath):
     files = sorted([f for f in os.listdir(folder) if '.fits' in f and 'HDR' in f])
@@ -40,13 +40,22 @@ def run_pipeline(folder = outpath):
         result = pipe(infile, pipemode='postbdf', force=True) # Run the pipeline
         result.save()
 
-def run_local_astrometry(folder = outpath):
-    files = sorted([f for f in os.listdir(folder) if '.fits' in f and 'HDR' in f and "WCS" not in f])
+"""
+run_local_astrometry:
+    Runs astrometry locally
+    inputs:
+    folder (str): The folder containing the files to be processed. (Default: outpath)
+    filter (str): The filter to be used. (Default: '')
+    Outputs:
+    Saves WCS files in the outpath.
+"""
+def run_local_astrometry(folder = outpath, filter = '', delete_hdr = False):
+    files = sorted([f for f in os.listdir(folder) if '.fits' in f and 'HDR' in f and "WCS" not in f and filter in f])
     print("Running local astrometry on the following files:")
     for i in range(len(files)):
         print(files[i])
     nospace = folder.replace(' ','\ ')
-    out = subprocess.Popen(f"cd {nospace} && solve-field --crpix-center --no-verify --scale-units arcsecperpix --scale-low 0.8 --scale-high 1.0 --downsample 4 --overwrite *.fits", shell=True, stdout=subprocess.PIPE)
+    out = subprocess.Popen(f"cd {nospace} && solve-field --crpix-center --no-verify --scale-units arcsecperpix --scale-low 0.8 --scale-high 1.0 --downsample 4 --overwrite *{filter}*.fits", shell=True, stdout=subprocess.PIPE)
     subprocess_return = out.stdout.read()
     
     # rename all files with .new extension to .fits extension
@@ -54,7 +63,7 @@ def run_local_astrometry(folder = outpath):
         if file.endswith('.new'):
             newfile = file.replace('HDR.new','WCS.fits')
             os.rename(os.path.join(folder,file), os.path.join(folder,newfile))
-        elif not "fits" in file:
+        elif not "fits" in file or (delete_hdr and "HDR" in file):
             # remove all files that are not .fits
             os.remove(os.path.join(folder,file))
     # subprocess run with output
