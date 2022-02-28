@@ -489,6 +489,9 @@ def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = dark
     # Batch process many files
     make_hotpix_mask(darkfolder)
     load_bias(biasfolder)
+    if isinstance(datapaths, str):
+      print("Error: datapaths must be list of strings, not string")
+      return
 
     for curr_path in datapaths:
         global datapath 
