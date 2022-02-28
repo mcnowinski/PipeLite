@@ -340,13 +340,9 @@ def load_bias(biasfolder):
     biasH_df = read_oneDF(biasfiles,0,biasfolder)
     global biasH
     biasH = biasH_df.image[1]
-    global biasnameH
-    biasnameH = biasfiles[0]
     biasL_df = read_oneDF(biasfiles,1,biasfolder)
     global biasL
     biasL = biasL_df.image[1]
-    global biasnameL
-    biasnameL = biasfiles[1]
     print("loaded bias")
 
 def load_flat(flatfolder, band_string = ""):
@@ -364,12 +360,8 @@ def load_flat(flatfolder, band_string = ""):
     flat_df = read_oneDF(flatfiles,whichfile,flatfolder)
     global flatH
     flatH = flat_df.image[0]
-    global flatnameH
-    flatnameH = flatfiles[1] + '_H'
     global flatL
     flatL = flat_df.image[1]
-    global flatnameL
-    flatnameL = flatfiles[1] + '_L'
     gain_df = read_oneDF(flatfiles, 1, flatfolder)
     global gain
     gain = gain_df.imageget('gain ratio')
