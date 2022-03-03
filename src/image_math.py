@@ -400,14 +400,17 @@ def process_one(index, files_L, files_H):
     return dataH, dataH_df, dataL, dataL_df
 
 '''cosmic_file: takes a DataFits object and returns the cosmic ray cleaned image.'''
-def cosmic_file(a):
-    return detect_cosmics(a.image, cleantype='medmask')[1]
+def cosmic_file(a, log = ""):
+    cosmics = detect_cosmics(a, cleantype='medmask')
+    # find True values in 2 dimensional array
+    print(np.size(cosmics[0]))
+    print(f"LOG: {log} || Detected {np.count_nonzero(cosmics[0])} pixels of cosmic rays.")
+    return cosmics[1]
 
 '''Process HDR images through bias-dark-flat, HDR combination, and downsampling stages'''
 # Returns outdata
 def process_hdr_images(dataH, dataL):
     kernel = Gaussian2DKernel(x_stddev=2)  # Prepare kernel for nan-replacement
-
     '''Process high-gain data'''
     # bias-dark-flat processing
     dataHbdf = ((dataH - biasH) - (darkH - biasH))/flatH
@@ -416,24 +419,18 @@ def process_hdr_images(dataH, dataL):
     dataHbdfx[hotpix] = np.nan
     # Replace nans with Gaussian-weighted average of adjacent pixels
     dataHbdfx = interpolate_replace_nans(dataHbdfx, kernel)
-
     '''Process low-gain data'''
     dataLbdf = (((dataL - biasL) - (darkL - biasL))/flatL) * gain
-    dataLbdfm = dataLbdf.copy()
     dataLbdfx = dataLbdf.copy()
     dataLbdfx[hotpix] = np.nan
     dataLbdfx = interpolate_replace_nans(dataLbdfx, kernel)
-
     '''Combine high and low gain data into HDR image'''
     upperL = np.where(dataLbdfx > 3000.0)   # Crossover threshold is currently hard-coded. Could be a parameter in future.
     Ldata = dataLbdfx.copy()
     HDRdata = dataHbdfx.copy()
     HDRdata[upperL] = Ldata[upperL]
 
-    '''Check to see if there are any nans'''
-    gg = np.isnan(HDRdata)
-    # print('nunber of nans in HDRdata before zoom =', np.sum(gg))
-
+    cosmic_file(HDRdata, log = "Cosmic ray detection on HDR before downsampling")
     '''Downsample image by factor of two'''
     outdata = nd.zoom(HDRdata,0.5)
     return outdata
@@ -460,7 +457,7 @@ def create_output(newname, outdata, dataH_df, outfolder):
     ## Load image data in output object.
     outd.image = outimage
     # Remove cosmic rays
-    outd.image = cosmic_file(outd)
+    outd.image = cosmic_file(outd.image, log = "Cosmic ray detection on HDR after downsampling")
     return outheader, outd, outname, outfile
 
 def prepare_header(outheader, outd):
