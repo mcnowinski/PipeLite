@@ -1,5 +1,4 @@
 from setup import *
-
 def quickpic4(image,titlestring='',madfactor=(3.,10.),mask=([0],[0]),mask2=([0],[0]) ,csize=100,edgecolor='r',\
                edgecolor2='b', figlims=(10,10), ilims=(0.,0.), cmap='gray', plotmasks=False):
     '''
@@ -41,7 +40,7 @@ def quickpic4(image,titlestring='',madfactor=(3.,10.),mask=([0],[0]),mask2=([0],
             plt.scatter(mask2[1],mask2[0],s=2*csize, facecolors='none', edgecolors=edgecolor2)
 
 
-def timesort(filelist, datapath, date_key = 'date-obs', print_list = False):
+def timesort(filelist, datapath, date_key = 'DATE-OBSd', print_list = False):
     '''
     Sorts a list of fits files by a header keyword with a date/time value.
     Arguments:
@@ -368,11 +367,19 @@ def load_flat(flatfolder, band_string = ""):
     print(f"loaded flats for band {band_string}")
 
 def load_datafiles(datapath, object_name = "", band_string = ""):
-    files = sorted([f for f in os.listdir(datapath) if '.fit' and 'RAW' in f\
-            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f], 
-            key = lambda x: os.path.getmtime(os.path.join(datapath, x)))
-    files_L = [f for f in files if 'bin1L' in f]
-    files_H = [f for f in files if 'bin1H' in f]
+    files = [f for f in os.listdir(datapath) if '.fit' and 'RAW' in f\
+            and '_bin1_' not in f and 'dark' not in f and object_name in f and band_string in f]
+    files_L = sorted([f for f in files if 'bin1L' in f],
+                        key = lambda x : fits.open(os.path.join(datapath,x))[1].header['DATE-OBS'])
+    files_H = sorted([f for f in files if 'bin1H' in f],
+                        key = lambda x: fits.open(os.path.join(datapath,x))[0].header['DATE-OBS'])
+    
+    for f in files:
+        if 'bin1L' in f:
+            print(get_dewtem(f, datapath, False))
+        if 'bin1H' in f:
+            print(get_dewtem(f, datapath, True))
+
     print("Processing the following files:")
     for i in range(len(files_L)):
         print(i, files_L[i])
@@ -394,9 +401,7 @@ def process_one(index, files_L, files_H):
 '''cosmic_file: takes a DataFits object and returns the cosmic ray cleaned image.'''
 def cosmic_file(a, log = ""):
     cosmics = detect_cosmics(a, cleantype='medmask')
-    # find True values in 2 dimensional array
-    print(np.size(cosmics[0]))
-    print(f"LOG: {log} || Detected {np.count_nonzero(cosmics[0])} pixels of cosmic rays.")
+    # print(f"LOG: {log} || Detected {count} pixels of cosmic rays.")
     return cosmics[1]
 
 '''Process HDR images through bias-dark-flat, HDR combination, and downsampling stages'''
@@ -436,6 +441,11 @@ def construct_output_name(index, files_H):
     # print(newname)
     return newname
 
+def get_dewtem(file, datapath):
+    if("bin1H" in file):
+        return fits.open(os.path.join(datapath,file))[0].header['DEWTEM1']
+    else:
+        return fits.open(os.path.join(datapath,file))[1].header['DEWTEM1']
 
 ## Set output path, output file name, and image name.
 def create_output(newname, outdata, dataH_df, outfolder):
@@ -448,8 +458,6 @@ def create_output(newname, outdata, dataH_df, outfolder):
     outd = DataFits()
     ## Load image data in output object.
     outd.image = outimage
-    # Remove cosmic rays
-    outd.image = cosmic_file(outd.image, log = "Cosmic ray detection on HDR after downsampling")
     return outheader, outd, outname, outfile
 
 def prepare_header(outheader, outd):
@@ -504,3 +512,20 @@ def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = dark
             outheader, outd, outname, outfile = create_output(newname, outdata, dataH_df, outfolder)
             prepare_header(outheader, outd)
             save_file(outd, outfile, outname)
+
+def sort_dewtemp(datapaths = [datapath]):
+    for datapath in datapaths:
+        os.makedirs(os.path.join(datapath, '-15'), exist_ok=True)
+        os.makedirs(os.path.join(datapath, '0'), exist_ok=True)
+        for file in os.listdir(datapath):
+            if file.endswith('.fits'):
+                try:
+                    if get_dewtem(file, datapath) == -15:
+                        # move to folder
+                        os.rename(os.path.join(datapath, file), os.path.join(datapath, "-15", file))
+                    else:
+                        os.rename(os.path.join(datapath, file), os.path.join(datapath, "0", file))
+                except:
+                    print(f"Could not find dewtemp for {file}")
+                
+
