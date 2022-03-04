@@ -354,7 +354,6 @@ def load_flat(flatfolder, band_string = "", curr_date = np.datetime64('today', '
         if band_string in val:
             filecandidates.add((i, get_header(val, flatfolder, 'DATE-OBS')[:10]))
     # get index of flat with closest date
-    print(filecandidates)
     closest = min(filecandidates, key=lambda x: abs(np.datetime64(x[1]) - np.datetime64(curr_date)))
     print(f"Closest flat: {closest}")
     whichfile = closest[0]
@@ -501,22 +500,24 @@ def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = dark
         global datapath 
         datapath = curr_path
         files_L, files_H = load_datafiles(datapath)
-        bandstr = find_band(files_L[0])
         old_curr_date = 0
         old_exposure_time = 0
+        old_band = ''
         for index in range(len(files_L)):
             output_name = construct_output_name(index, files_H)
-            print(f"Processing file {output_name}")
+            print(f"\nProcessing file {output_name}")
             # If already processed, skip
             if os.path.exists(os.path.join(outfolder, output_name)) == True:
                 print(f"File {construct_output_name(index, files_H)} already exists!")
                 continue
             curr_date = get_header(files_L[index], datapath, 'DATE-OBS')[:10]
+            curr_band = find_band(files_L[index])
             # Load new flat if necessary
-            if curr_date != old_curr_date:
+            if curr_date != old_curr_date or curr_band != old_band:
                 old_curr_date = curr_date
-                print("Date mismatch: Getting new flat")
-                load_flat(flatfolder, bandstr, curr_date)
+                old_band = curr_band
+                print("Date/string mismatch: Getting new flat")
+                load_flat(flatfolder, curr_band, curr_date)
             # Load new dark if necessary
             curr_exposure_time = get_exposure_time(files_L[index])
             if curr_exposure_time != old_exposure_time:
