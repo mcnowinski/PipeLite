@@ -24,21 +24,29 @@ run_pipeline:
 
     Inputs:
     folder (str): The folder containing the files to be processed. (Default: outpath)
+    step (str): The step to be run. (Default: 'hotpix,astrometry')
 
     Outputs:
     Saves HPX and WCS files in the outpath.
 """
-def run_pipeline(folder = outpath):
-    files = sorted([f for f in os.listdir(folder) if '.fits' in f and 'HDR' in f])
-    print("Running pipeline on the following files:")
-    for i in range(len(files)):
-        print(files[i])
-
-    for file in files:
-        infile = os.path.join(folder,file)
-        pipe = PipeLine(config =[baseconfig, dconfig]) # Make a pipe object
-        result = pipe(infile, pipemode='postbdf', force=True) # Run the pipeline
+def run_pipeline(folder = outpath, step = 'hotpix,astrometry'):
+    
+    if 'HDR' in step:
+        files = sorted([f for f in os.listdir(folder) if '.fits' in f])
+        filesrun = [os.path.join(folder, file) for file in files]
+        pipe = PipeLine(config = [baseconfig, os.path.join(os.getcwd(),'dconf_HDR.txt')])
+        result = pipe(filesrun, pipemode='hdrgroups', force=True)
         result.save()
+    else:
+        files = sorted([f for f in os.listdir(folder) if '.fits' in f and 'HDR' in f])
+        print("Running pipeline on the following files:")
+        for i in range(len(files)):
+            print(files[i])
+        for file in files:
+            infile = os.path.join(folder,file)
+            pipe = PipeLine(config =[baseconfig, dconfig]) # Make a pipe object
+            result = pipe(infile, pipemode='postbdf', force=True) # Run the pipeline
+            result.save()
 
 """
 run_local_astrometry:

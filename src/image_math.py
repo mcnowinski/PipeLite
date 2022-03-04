@@ -178,7 +178,7 @@ def histogram2(img, titlestring = '', NBINS=800, percent=(.05,.05), figsize=(18,
     Version 1.1
     '''
 
-    plt.figure(figsize = figsize)
+    # plt.figure(figsize = figsize)
     
     ## Set any nans to a value just smaller than img minimum so the histogram won't get confused.
     newimg = img.copy()
@@ -295,8 +295,8 @@ def make_stackDF(whichfiles, whichpath):
 
     return image, headlist, stats
 
-def make_hotpix_mask(darkfolder):
-    darkfiles = sorted([f for f in os.listdir(darkfolder) if '.fit' in f and 'dark' in f])
+def make_hotpix_mask(darkfolder, exposure = "128"):
+    darkfiles = sorted([f for f in os.listdir(darkfolder) if '.fit' in f and 'MDARK' in f and exposure in f])
     darkH_df = read_oneDF(darkfiles,0,darkfolder)
     global darkH
     darkH = darkH_df.image
@@ -327,7 +327,7 @@ def find_band(filepath):
         band:    string containing the band name
     '''
     unknown = ''
-    for b in ["h-alpha", "g-band", "i-ban", "r-band", "oiii", "sii", "clear"]:
+    for b in ["h-alpha", "g-band", "i-band", "r-band", "oiii", "sii", "clear"]:
         if b in filepath:
             print("Found band:", b)
             return b
@@ -335,7 +335,7 @@ def find_band(filepath):
 
 def load_bias(biasfolder):
     ## List the files in biaspath.
-    biasfiles = [f for f in os.listdir(biasfolder) if '.fit' in f]    #  and 'dark' in f]
+    biasfiles = [f for f in os.listdir(biasfolder) if 'PFIT' in f]    #  and 'dark' in f]
     biasH_df = read_oneDF(biasfiles,0,biasfolder)
     global biasH
     biasH = biasH_df.image[1]
@@ -344,14 +344,20 @@ def load_bias(biasfolder):
     biasL = biasL_df.image[1]
     print("loaded bias")
 
-def load_flat(flatfolder, band_string = ""):
+def load_flat(flatfolder, band_string = "", curr_date = np.datetime64('today', 'D')):
     flatfiles = [f for f in os.listdir(flatfolder) if '.fit' in f and 'MFLAT' in f]
     whichfile = -1
+    filecandidates = set()
     if band_string == "":
         print("Warning: no band specified. Using first flat file.")
     for i,val in enumerate(flatfiles):
         if band_string in val:
-            whichfile = i
+            filecandidates.add((i, get_header(val, flatfolder, 'DATE-OBS')[:10]))
+    # get index of flat with closest date
+    print(filecandidates)
+    closest = min(filecandidates, key=lambda x: abs(np.datetime64(x[1]) - np.datetime64(curr_date)))
+    print(f"Closest flat: {closest}")
+    whichfile = closest[0]
     if whichfile == -1:
         print(f"ERROR: Could not find flat file with band_string = {band_string}")
         return
@@ -361,7 +367,9 @@ def load_flat(flatfolder, band_string = ""):
     flatH = flat_df.image[0]
     global flatL
     flatL = flat_df.image[1]
-    gain_df = read_oneDF(flatfiles, 1, flatfolder)
+    global flat_date
+    flat_date = flat_df.getheader()['DATE-OBS'][:10]
+    gain_df = read_oneDF(flatfiles, whichfile, flatfolder)
     global gain
     gain = gain_df.imageget('gain ratio')
     print(f"loaded flats for band {band_string}")
@@ -373,13 +381,6 @@ def load_datafiles(datapath, object_name = "", band_string = ""):
                         key = lambda x : fits.open(os.path.join(datapath,x))[1].header['DATE-OBS'])
     files_H = sorted([f for f in files if 'bin1H' in f],
                         key = lambda x: fits.open(os.path.join(datapath,x))[0].header['DATE-OBS'])
-    
-    for f in files:
-        if 'bin1L' in f:
-            print(get_dewtem(f, datapath, False))
-        if 'bin1H' in f:
-            print(get_dewtem(f, datapath, True))
-
     print("Processing the following files:")
     for i in range(len(files_L)):
         print(i, files_L[i])
@@ -426,8 +427,6 @@ def process_hdr_images(dataH, dataL):
     Ldata = dataLbdfx.copy()
     HDRdata = dataHbdfx.copy()
     HDRdata[upperL] = Ldata[upperL]
-
-    cosmic_file(HDRdata, log = "Cosmic ray detection on HDR before downsampling")
     '''Downsample image by factor of two'''
     outdata = nd.zoom(HDRdata,0.5)
     return outdata
@@ -441,11 +440,11 @@ def construct_output_name(index, files_H):
     # print(newname)
     return newname
 
-def get_dewtem(file, datapath):
-    if("bin1H" in file):
-        return fits.open(os.path.join(datapath,file))[0].header['DEWTEM1']
+def get_header(file, datapath, header = 'DEWTEM1'):
+    if(any([a in file for a in ['bin1H', 'MFLAT', 'MDARK', 'PFIT']])):
+        return fits.open(os.path.join(datapath,file))[0].header[header]
     else:
-        return fits.open(os.path.join(datapath,file))[1].header['DEWTEM1']
+        return fits.open(os.path.join(datapath,file))[1].header[header]
 
 ## Set output path, output file name, and image name.
 def create_output(newname, outdata, dataH_df, outfolder):
@@ -491,9 +490,8 @@ Batch_process
         Saves HDR images to output path.
 
 """ 
-def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = darkpath, biasfolder = biaspath, flatfolder = flatpath):
+def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = darkpath, biasfolder = biaspath, flatfolder = flatpath, detect_cosmics = False):
     # Batch process many files
-    make_hotpix_mask(darkfolder)
     load_bias(biasfolder)
     if isinstance(datapaths, str):
       print("Error: datapaths must be list of strings, not string")
@@ -504,14 +502,41 @@ def batch_process(datapaths = [datapath], outfolder = outpath, darkfolder = dark
         datapath = curr_path
         files_L, files_H = load_datafiles(datapath)
         bandstr = find_band(files_L[0])
-        load_flat(flatfolder, bandstr)
+        old_curr_date = 0
+        old_exposure_time = 0
         for index in range(len(files_L)):
+            output_name = construct_output_name(index, files_H)
+            print(f"Processing file {output_name}")
+            # If already processed, skip
+            if os.path.exists(os.path.join(outfolder, output_name)) == True:
+                print(f"File {construct_output_name(index, files_H)} already exists!")
+                continue
+            curr_date = get_header(files_L[index], datapath, 'DATE-OBS')[:10]
+            # Load new flat if necessary
+            if curr_date != old_curr_date:
+                old_curr_date = curr_date
+                print("Date mismatch: Getting new flat")
+                load_flat(flatfolder, bandstr, curr_date)
+            # Load new dark if necessary
+            curr_exposure_time = get_exposure_time(files_L[index])
+            if curr_exposure_time != old_exposure_time:
+                old_exposure_time = curr_exposure_time
+                print("Exposure time mismatch: Getting new dark")
+                make_hotpix_mask(darkfolder, curr_exposure_time)
+
             dataH, dataH_df, dataL, dataL_df = process_one(index, files_L, files_H)
             outdata = process_hdr_images(dataH, dataL)
-            newname = construct_output_name(index, files_H)
-            outheader, outd, outname, outfile = create_output(newname, outdata, dataH_df, outfolder)
+            outheader, outd, outname, outfile = create_output(output_name, outdata, dataH_df, outfolder)
             prepare_header(outheader, outd)
+            if(detect_cosmics):
+                outd.image = cosmic_file(outd.image)
             save_file(outd, outfile, outname)
+
+def get_exposure_time(filename):
+    if '128' in filename:
+        return "128"
+    else:
+        return "256"
 
 def sort_dewtemp(datapaths = [datapath]):
     for datapath in datapaths:
@@ -520,7 +545,7 @@ def sort_dewtemp(datapaths = [datapath]):
         for file in os.listdir(datapath):
             if file.endswith('.fits'):
                 try:
-                    if get_dewtem(file, datapath) == -15:
+                    if get_header(file, datapath) == -15:
                         # move to folder
                         os.rename(os.path.join(datapath, file), os.path.join(datapath, "-15", file))
                     else:

@@ -1,0 +1,25 @@
+# Delta config for running StepHDR
+ 
+# Environment variable, set your paths for master files here
+[envars]
+    MASTER_BDF_FOLDER = /Users/jonahdf/Local Documents/Astro/BDFs
+ 
+# Mode for using StepHdr dirctly
+[mode_hdrstep]
+    datakeys = "OBSERVAT=StoneEdge"
+    stepslist = load, StepHdr, save
+ 
+# Mode for using StepHdr with multiple observations inside StepDataGroup
+[mode_hdrgroups]
+    datakeys = "OBSERVAT=StoneEdge"
+    stepslist = load, StepDataGroup, save
+    [[datagroup]]
+        redstepname = StepHdr
+    groupkeys = DATE-OBS
+ 
+[hdr]
+    lpfitfile = $MASTER_BDF_FOLDER/PFIT/*_bin1L_*_PFIT.fits
+    hpfitfile = $MASTER_BDF_FOLDER/PFIT/*_bin1H_*PFIT.fits
+    ldarkfile = $MASTER_BDF_FOLDER/MDARK/*.fits
+    hdarkfile = $MASTER_BDF_FOLDER/MDARK/*.fits
+    flatfile = $MASTER_BDF_FOLDER/MFLAT/*.fits
