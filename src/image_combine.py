@@ -9,7 +9,7 @@ load_data (internal)
 Loads data from the outfolder with the fiven filter
 """
 def load_data(inpath = outpath, filter = "WCS"):
-    somefiles = [f for f in os.listdir(inpath) if '.fits' in f and filter in f]
+    somefiles = [f for f in os.listdir(inpath) if '.fits' in f and filter in f and 'WCS' in f]
     print(somefiles)
     global files
     files = sorted(somefiles)   ## Put files in alphabatical order, if necessary.
