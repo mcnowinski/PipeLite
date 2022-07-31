@@ -12,7 +12,11 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 
   In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
 
-`python3 --version`
+```
+###
+python3 --version
+###
+```
 
 And make sure the output is 3.3 or above. If not, you will have to install Python 3, which you can learn to do [here](https://www.python.org/downloads/). 
 
