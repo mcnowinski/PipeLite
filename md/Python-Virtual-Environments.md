@@ -17,15 +17,15 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 [3] Create the virtual environment:
 
 ```
-conda create --name astro
+conda create --name pipelite
 ```
 
-where the last argument is the name of your environment, e.g "astro." This will create a folder containing your environment.
+where the last argument is the name of your environment, e.g "pipelite." This will create a folder containing your environment.
 
 [4] Next, you can start running your new environment in the terminal with the following command:
 
 ```
-conda activate astro
+conda activate pipelite
 ```
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
@@ -41,7 +41,7 @@ conda install ipykernel
 [6] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 ```
-python -m ipykernel install --user --name=astro
+python -m ipykernel install --user --name=pipelite
 ```
 
 [7] Install the required packages for your project, running this command in your virtual environment.
