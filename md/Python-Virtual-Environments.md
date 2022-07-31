@@ -10,14 +10,20 @@ When older or newer versions of packages are already installed onto machines, co
 
 Luckily, Python 3.3+ comes preinstalled with a virtual environment manager called venv. This tutorial will show you how to get started with it. Note that I am using a Windows machine, so running these steps on a Mac might be a bit complicated.
 
-[1] Install [Anaconda](https://repo.anaconda.com/archive/Anaconda3-2022.05-Windows-x86_64.exe) (Python v3.3 or later is required). 
+[1] Install [Python](https://www.python.org/ftp/python/3.10.5/python-3.10.5-amd64.exe) (Python v3.3 or later is required).
 
-[2] Open the Anaconda Prompt and navigate to the folder in which you want to create your virtual environment. 
-
-[3] Create the virtual environment:
+[2] Ensure that Python v3.3+ is installed:
 
 ```
-conda create --name pipelite
+python3 --version
+```
+
+[3] Open the Command Prompt and navigate to the folder in which you want to create your virtual environment. 
+
+[4] Create the virtual environment:
+
+```
+python3 -m venv myenv
 ```
 
 where the last argument is the name of your environment, e.g "pipelite." This will create a folder containing your environment.
