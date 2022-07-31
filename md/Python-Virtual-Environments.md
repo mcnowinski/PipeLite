@@ -50,7 +50,7 @@ pip install ipykernel
 python -m ipykernel install --user --name=[name]
 ```
 
-[7] Install the required packages for your project, running this command in your virtual environment.
+[7] Install the required packages for your project, running this command in your virtual environment. NOTE: For Windows, you made need to install [Microsoft C++ Build Tools Visual Studio 2022](https://visualstudio.microsoft.com/downloads/).
 
 ```
 pip install -r path/to/requirements.txt
