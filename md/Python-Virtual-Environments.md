@@ -26,7 +26,7 @@ python --version
 python -m venv [name]
 ```
 
-where the [name] is the name of your environment, e.g "pipelite." This will create a sub-folder (e.g., pipelite) containing your environment.
+where the [name] is the name of your environment, e.g "astro" This will create a sub-folder (e.g., pipelite) containing your environment.
 
 [4] Next, you can start running your new environment in the terminal with the following command:
 
