@@ -14,7 +14,7 @@ It combines image_math_BDF, the HotPix and Astrometry steps of the pipeline, and
 <h2> Running Locally </h2>
 
 1. Fetch the repository. If you have Git on your computer, you can run ```git fetch https://github.com/jonahdf/pipeLite ```
-2. Create a new Python environment. Note: You must have Python 3.3+ do use venv. You can follow the instructions for that [here](Python-Virtual-Environments.md)
+2. Create a new Python environment. Note: You must have Python 3.3+ do use venv. You can follow the instructions for that [here](md/Python-Virtual-Environments.md).
 3. Once inside your virtual environment, run ```pip install -r requirements.txt``` or ```conda install requirements.txt``` if using Conda.
 4. Everything else you need to know should be in src/main.ipynb!
 **The only configuration you must set is your astrometry.net API key. Set this in the /src/dconf_dah.txt file**
