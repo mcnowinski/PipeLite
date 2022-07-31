@@ -17,7 +17,7 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 [3] Create and run the virtual environment:
 
 ```
-conda create --name myenv
+conda create --name astro
 ```
 
 where the last argument is the name of your environment, e.g "astro." This will create a folder containing your environment.
@@ -25,7 +25,7 @@ where the last argument is the name of your environment, e.g "astro." This will
 Next, you can start running your new environment in the terminal with the following command:
 
 ```
-conda activate myenv
+conda activate astro
 ```
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
@@ -41,7 +41,7 @@ conda install ipykernel
 [5] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 ```
-python -m ipykernel install --user --name=myenv
+python -m ipykernel install --user --name=astro
 ```
 
 [6] Install the required packages for this project, running this command in your virtual environment.
