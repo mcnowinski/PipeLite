@@ -15,7 +15,6 @@ It combines image_math_BDF, the HotPix and Astrometry steps of the pipeline, and
 <h2> Running in Colab</h2>
 
 1. In [Colab](https://colab.research.google.com), open File -> Open Notebook -> Github, and paste in the [link to this repo](https://github.com/jonahdf/pipeLite), and open pipeLite-colab.ipynb
-
 2. Make a copy with File -> Save a copy in Drive
 3. When you run the first cell, it will fetch this Github repo and add it to your working directory. From there, you can add your astrometry.net API key.
 
