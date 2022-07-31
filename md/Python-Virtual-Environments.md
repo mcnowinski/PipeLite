@@ -23,15 +23,15 @@ python --version
 [4] Create the virtual environment:
 
 ```
-python -m venv pipelite
+python -m venv [name]
 ```
 
-where the last argument is the name of your environment, e.g "pipelite." This will create a folder containing your environment.
+where the [name] is the name of your environment, e.g "pipelite." This will create a sub-folder (e.g., pipelite) containing your environment.
 
 [4] Next, you can start running your new environment in the terminal with the following command:
 
 ```
-conda activate pipelite
+[name]\Scripts\activate.bat
 ```
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
@@ -41,17 +41,17 @@ Now, you can tell you are in your new environment if the name appears in parenth
 [5] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
 ```
-conda install ipykernel
+pip install ipykernel
 ```
 
 [6] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 ```
-python -m ipykernel install --user --name=pipelite
+python -m ipykernel install --user --name=[name]
 ```
 
 [7] Install the required packages for your project, running this command in your virtual environment.
 
 ```
-conda install --file path/to/requirements.txt
+pip install -r path/to/requirements.txt
 ```
