@@ -8,7 +8,7 @@ When older or newer versions of packages are already installed onto machines, co
 
 Luckily, Python 3.3+ comes preinstalled with a virtual environment manager called venv. This tutorial will show you how to get started with it. Note that I am using a Mac, so running these steps on Windows might be a bit complicated.
 
-1. Make sure you have the correct version of python installed. **If you are using Anaconda, skip to after step 3.**
+[1] Make sure you have the correct version of python installed. **If you are using Anaconda, skip to after step 3.**
 
   In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
 
