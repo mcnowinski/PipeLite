@@ -15,15 +15,15 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 [2] Ensure that Python v3.3+ is installed:
 
 ```
-python3 --version
+python --version
 ```
 
-[3] Open the Command Prompt and navigate to the folder in which you want to create your virtual environment. 
+[3] Open the a command prompt and navigate to the folder in which you want to create your virtual environment. 
 
 [4] Create the virtual environment:
 
 ```
-python3 -m venv myenv
+python -m venv pipelite
 ```
 
 where the last argument is the name of your environment, e.g "pipelite." This will create a folder containing your environment.
