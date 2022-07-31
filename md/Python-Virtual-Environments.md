@@ -1,3 +1,5 @@
+<h1>Python Virtual Environments</h1>
+
 When working on a large python project, you often need to install third party packages. The larger a project, the more packages you need, often with sub-dependencies. It can quickly get quite complicated. 
 
 Third-party software gets updated periodically, and it is not uncommon for projects to break due to updated packages. This is why it can be helpful to take a snapshot of the exact versions of each third-party package that a project uses. You will often find something that looks like this, called requirements.txt in Python projects:
