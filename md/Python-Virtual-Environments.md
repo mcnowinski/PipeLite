@@ -12,9 +12,9 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 
 [1] Install [Anaconda](https://repo.anaconda.com/archive/Anaconda3-2022.05-Windows-x86_64.exe) (Python v3.3 or later is required). 
 
-[2] Open the Anaconda Prompt and navigate to the folder you want to create your virtual environment in. 
+[2] Open the Anaconda Prompt and navigate to the folder in which you want to create your virtual environment. 
 
-[3] Create and run the virtual environment:
+[3] Create the virtual environment:
 
 ```
 conda create --name astro
@@ -44,7 +44,7 @@ conda install ipykernel
 python -m ipykernel install --user --name=astro
 ```
 
-[7] Install the required packages for this project, running this command in your virtual environment.
+[7] Install the required packages for your project, running this command in your virtual environment.
 
 ```
 conda install --file path/to/requirements.txt
