@@ -38,7 +38,7 @@ source myenv /bin/activate
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
 
-[python command line](images/python_environment.png)
+![python command line](images/python_environment.jpg)
 
 **Note: If you are using anaconda, the same thing can be achieved in these steps from any directory:**
 
