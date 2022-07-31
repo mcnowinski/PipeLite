@@ -13,9 +13,7 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
   In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
 
 ```
-###
 python3 --version
-###
 ```
 
 And make sure the output is 3.3 or above. If not, you will have to install Python 3, which you can learn to do [here](https://www.python.org/downloads/). 
@@ -24,13 +22,17 @@ And make sure the output is 3.3 or above. If not, you will have to install Pytho
 
 [3] Create and run the virtual environment:
 
-`python3 -m venv myenv`
+```
+python3 -m venv myenv
+```
 
 Where the last argument is the name of your environment, e.g "astro." This will create a folder containing your environment.
 
 Next, you can start running your new environment in the terminal with the following command:
 
-`source` `myenv``/bin/activate`
+```
+source myenv /bin/activate
+```
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
 
@@ -42,22 +44,27 @@ Now, you can tell you are in your new environment if the name appears in parenth
 
 *    Activate your environment: `conda activate myenv`
 
-  
-
 [4] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
-`pip` `install` `ipykernel`
+```
+pip install ipykernel
+```
 
 [5] Once this is done, add the environment to your Jupyter notebook path with the following:
 
-`python -m ipykernel` `install` `--user --name=myenv`
+```
+python -m ipykernel install --user --name=myenv
+```
 
 Check to make sure your Jupyter recognizes your new environment, and you should be good to install packages!
 
 You can install from a requirements.txt by running this command in your virtual environment.
 
-`pip` `install` `-r path``/to/requirements``.txt`
+```pip install -r path /to/requirements.txt
+```
 
 or, if using Conda:
 
-`conda install --file path/to/requirements.txt`
+```
+conda install --file path/to/requirements.txt
+```
