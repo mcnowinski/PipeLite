@@ -22,7 +22,7 @@ conda create --name astro
 
 where the last argument is the name of your environment, e.g "astro." This will create a folder containing your environment.
 
-Next, you can start running your new environment in the terminal with the following command:
+[4] Next, you can start running your new environment in the terminal with the following command:
 
 ```
 conda activate astro
@@ -32,19 +32,19 @@ Now, you can tell you are in your new environment if the name appears in parenth
 
 ![python command line](images/python_environment.jpg)
 
-[4] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
+[5] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
 ```
 conda install ipykernel
 ```
 
-[5] Once this is done, add the environment to your Jupyter notebook path with the following:
+[6] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 ```
 python -m ipykernel install --user --name=astro
 ```
 
-[6] Install the required packages for this project, running this command in your virtual environment.
+[7] Install the required packages for this project, running this command in your virtual environment.
 
 ```
 conda install --file path/to/requirements.txt
