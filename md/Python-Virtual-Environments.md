@@ -2,7 +2,7 @@ When working on a large python project, you often need to install third party pa
 
 Third-party software gets updated periodically, and it is not uncommon for projects to break due to updated packages. This is why it can be helpful to take a snapshot of the exact versions of each third-party package that a project uses. You will often find something that looks like this, called requirements.txt in Python projects:
 
-[here](images/requirements.txt.jog.jpg)
+![requirements.txt](images/requirements.txt.jog.jpg)
 
 When older or newer versions of packages are already installed onto machines, code can often break. That is why it is helpful to use a tool called **virtual environments**. When you create a virtual environment, you are installing a python environment that is a completely blank slate, with no packages installed. It is common to create separate virtual environments for each software project you run locally on your computer. With that blank slate, you can then install the exact version of each package that the developer has on their computer, ensuring that the code will run correctly.
 
@@ -36,13 +36,13 @@ source myenv /bin/activate
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
 
-[](/download/attachments/295568692/image2022-2-1_21-34-15.png?version=1&modificationDate=1643772855000&api=v2)
+[python command line](images/python_environment.png)
 
 **Note: If you are using anaconda, the same thing can be achieved in these steps from any directory:**
 
-*    Create conda env: `conda create --name myenv`
+* Create conda env: `conda create --name myenv`
 
-*    Activate your environment: `conda activate myenv`
+* Activate your environment: `conda activate myenv`
 
 [4] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
