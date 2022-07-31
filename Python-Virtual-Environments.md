@@ -16,9 +16,9 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 
 And make sure the output is 3.3 or above. If not, you will have to install Python 3, which you can learn to do [here](https://www.python.org/downloads/). 
 
-2) Navigate to the folder you want to create your virtual environment in. 
+[2] Navigate to the folder you want to create your virtual environment in. 
 
-3) Create and run the virtual environment:
+[3] Create and run the virtual environment:
 
 `python3 -m venv myenv`
 
@@ -40,11 +40,11 @@ Now, you can tell you are in your new environment if the name appears in parenth
 
   
 
-4) Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
+[4] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
 `pip` `install` `ipykernel`
 
-5) Once this is done, add the environment to your Jupyter notebook path with the following:
+[5] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 `python -m ipykernel` `install` `--user --name=myenv`
 
