@@ -10,7 +10,7 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 
 1. Make sure you have the correct version of python installed. **If you are using Anaconda, skip to after step 3.**
 
-In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
+  In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
 
 `python3 --version`
 
