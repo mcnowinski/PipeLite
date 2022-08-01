@@ -12,6 +12,9 @@ Luckily, Python 3.3+ comes preinstalled with a virtual environment manager calle
 
 [1] Install [Python](https://www.python.org/ftp/python/3.10.5/python-3.10.5-amd64.exe) (Python v3.3 or later is required).
 
+[1b] For Windows, you will need to install the [Microsoft Build Tools for Visual Studio](https://wiki.python.org/moin/WindowsCompilers#Microsoft_Visual_C.2B-.2B-_14.2_standalone:_Build_Tools_for_Visual_Studio_2019_.28x86.2C_x64.2C_ARM.2C_ARM64.29)
+* In Build tools, ensure the latest versions of MSVCvXXX - VS YYYY C++ x64/x86 build tools and Windows 10 SDK are checked.
+
 [2] Ensure that Python v3.3+ is installed:
 
 ```
