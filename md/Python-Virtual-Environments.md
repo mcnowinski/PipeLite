@@ -8,66 +8,53 @@ Third-party software gets updated periodically, and it is not uncommon for proje
 
 When older or newer versions of packages are already installed onto machines, code can often break. That is why it is helpful to use a tool called **virtual environments**. When you create a virtual environment, you are installing a python environment that is a completely blank slate, with no packages installed. It is common to create separate virtual environments for each software project you run locally on your computer. With that blank slate, you can then install the exact version of each package that the developer has on their computer, ensuring that the code will run correctly.
 
-Luckily, Python 3.3+ comes preinstalled with a virtual environment manager called venv. This tutorial will show you how to get started with it. Note that I am using a Mac, so running these steps on Windows might be a bit complicated.
+Luckily, Python 3.3+ comes preinstalled with a virtual environment manager called venv. This tutorial will show you how to get started with it. Note that I am using a Windows machine, so running these steps on a Mac might be a bit complicated.
 
-[1] Make sure you have the correct version of python installed. **If you are using Anaconda, skip to after step 3.**
+[1] Install [Python](https://www.python.org/ftp/python/3.10.5/python-3.10.5-amd64.exe) (Python v3.3 or later is required).
 
-  In your terminal of choice (the default one works well on Mac, and powershell/cmd can work on Windows, run the following command:
+[1b] For Windows, you will need to install the [Microsoft Build Tools for Visual Studio](https://wiki.python.org/moin/WindowsCompilers#Microsoft_Visual_C.2B-.2B-_14.2_standalone:_Build_Tools_for_Visual_Studio_2019_.28x86.2C_x64.2C_ARM.2C_ARM64.29)
+* In Build tools, ensure the latest versions of MSVCvXXX - VS YYYY C++ x64/x86 build tools and Windows 10 SDK are checked.
 
-```
-python3 --version
-```
-
-And make sure the output is 3.3 or above. If not, you will have to install Python 3, which you can learn to do [here](https://www.python.org/downloads/). 
-
-[2] Navigate to the folder you want to create your virtual environment in. 
-
-[3] Create and run the virtual environment:
+[2] Ensure that Python v3.3+ is installed:
 
 ```
-python3 -m venv myenv
+python --version
 ```
 
-Where the last argument is the name of your environment, e.g "astro." This will create a folder containing your environment.
+[3] Open the a command prompt and navigate to the folder in which you want to create your virtual environment. 
 
-Next, you can start running your new environment in the terminal with the following command:
+[4] Create the virtual environment:
 
 ```
-source myenv /bin/activate
+python -m venv [name]
+```
+
+where the [name] is the name of your environment, e.g "astro" This will create a sub-folder (e.g., pipelite) containing your environment.
+
+[4] Next, you can start running your new environment in the terminal with the following command:
+
+```
+[name]\Scripts\activate.bat
 ```
 
 Now, you can tell you are in your new environment if the name appears in parentheses in your terminal:
 
-[python command line](images/python_environment.png)
+![python command line](images/python_environment.jpg)
 
-**Note: If you are using anaconda, the same thing can be achieved in these steps from any directory:**
-
-* Create conda env: `conda create --name myenv`
-
-* Activate your environment: `conda activate myenv`
-
-[4] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
+[5] Next, if you want your new python environment to be recognized by Jupyter Notebook, you must install the ipykernel package to your new environment:
 
 ```
 pip install ipykernel
 ```
 
-[5] Once this is done, add the environment to your Jupyter notebook path with the following:
+[6] Once this is done, add the environment to your Jupyter notebook path with the following:
 
 ```
-python -m ipykernel install --user --name=myenv
+python -m ipykernel install --user --name=[name]
 ```
 
-Check to make sure your Jupyter recognizes your new environment, and you should be good to install packages!
-
-You can install from a requirements.txt by running this command in your virtual environment.
+[7] Install the required packages for your project, running this command in your virtual environment. NOTE: For Windows, you made need to install [Microsoft C++ Build Tools Visual Studio 2022]([https://visualstudio.microsoft.com/downloads/](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16).
 
 ```
-pip install -r path /to/requirements.txt
-```
-
-or, if using Conda:
-
-```
-conda install --file path/to/requirements.txt
+pip install -r path/to/requirements.txt
 ```
