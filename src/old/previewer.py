@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import glob
 from astropy.visualization import ZScaleInterval
