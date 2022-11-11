@@ -166,7 +166,7 @@ for bin in cal['bias']:
     hdulist = bias.to_hdu()
     header = hdulist[0].header
     header[image_type_label] = 'BIAS    '
-    hdulist.writeto(bias_master, clobber=True)
+    hdulist.writeto(bias_master, overwrite=True)
     logme('Created master bias frame (%s) from %d bias frames.' %
           (bias_master, len(cal['bias'][bin])))
 
@@ -193,7 +193,7 @@ for bin in cal['dark']:
         # add bias correction to header
         header = hdulist[0].header
         header[image_type_label] = 'DARK    '
-        hdulist.writeto(dark_master, clobber=True)
+        hdulist.writeto(dark_master, overwrite=True)
         logme('Created master dark frame (%s) from %d dark frames.' %
               (dark_master, len(cal['dark'][bin][exp])))
 
@@ -223,7 +223,7 @@ for bin in cal['flat']:
         # add bias correction to header
         header = hdulist[0].header
         header[image_type_label] = 'FLAT    '
-        hdulist.writeto(flat_master, clobber=True)
+        hdulist.writeto(flat_master, overwrite=True)
         logme('Created master flat frame (%s) from %d flat frames.' %
               (flat_master, len(cal['flat'][bin][filt])))
 
